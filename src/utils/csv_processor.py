@@ -221,6 +221,7 @@ def convert_folder(connectionInfo):
         + ":"
         + connectionInfo["port"]
         + "/?authSource=admin"
+        + "&tls=true&tlsAllowInvalidCertificates=true"
     )
     client = MongoClient(connection_str, serverSelectionTimeoutMS=MAX_SERVER_SEL_DELAY)
     try:
@@ -237,7 +238,7 @@ def convert_folder(connectionInfo):
             try:
                 fileName = file[0 : file.find(".")]
                 cmd = (
-                    "mongoimport --quiet --uri mongodb://{}:{}@{}:{}/{}?authSource=admin --file {} -c {} --drop --type csv --headerline"
+                    'mongoimport --quiet --uri "mongodb://{}:{}@{}:{}/{}?authSource=admin&tls=true" --tlsInsecure --file {} -c {} --drop --type csv --headerline'
                 ).format(
                     connectionInfo["username"],
                     connectionInfo["password"],
